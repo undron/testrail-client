@@ -14,7 +14,7 @@ namespace TestRail.Types
         public ulong TestID { get; set; }
 
         /// <summary>ID of the case</summary>
-        public ulong CaseID { get; set; }
+        public ulong? CaseID { get; set; }
 
         /// <summary>ID of the test status</summary>
         public ulong? StatusID { get; set; }
