@@ -13,6 +13,9 @@ namespace TestRail.Types
         /// <summary>ID of the test</summary>
         public ulong TestID { get; set; }
 
+        /// <summary>ID of the case</summary>
+        public ulong CaseID { get; set; }
+
         /// <summary>ID of the test status</summary>
         public ulong? StatusID { get; set; }
 
@@ -36,6 +39,9 @@ namespace TestRail.Types
 
         /// <summary>a comma-separated list of defects to link to the test result</summary>
         public string Defects { get; set; }
+
+        /// <summary>Custom fields</summary>
+        public JObject Customs { get; set; }
         #endregion Public Properties
 
         #region Public Methods
@@ -75,12 +81,15 @@ namespace TestRail.Types
         public virtual JObject GetJson()
         {
             dynamic jsonParams = new JObject();
+            if (null != TestID) { jsonParams.test_id = TestID; }
+            if (null != CaseID) { jsonParams.case_id = CaseID; }
             if (null != StatusID) { jsonParams.status_id = (int)StatusID; }
             if (null != Comment) { jsonParams.comment = Comment; }
             if (null != Version) { jsonParams.version = Version; }
             if (null != Elapsed) { jsonParams.elapsed = Elapsed.Value.Ticks; }
             if (null != Defects) { jsonParams.defects = Defects; }
             if (null != AssignedToID) { jsonParams.assignedto_id = AssignedToID.Value; }
+            if (null != Customs) { jsonParams = JsonUtility.Merge(jsonParams, Customs); }
             return jsonParams;
         }
         #endregion Public Methods

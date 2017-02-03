@@ -140,6 +140,18 @@ namespace TestRail
             return _SendCommand(uri, jsonParams);
         }
 
+        /// <summary>creates a new test result for a test run and list of tests</summary>
+        /// <param name="runID">the id of the test run</param>
+        /// <param name="results">case results list</param>
+        /// <returns></returns>
+        public CommandResult<ulong> AddResults(ulong runID, List<Result> results)
+        {
+            var uri = _CreateUri_(_CommandType_.add, "results", runID);
+            JArray _results = new JArray(results.Select(r => r.GetJson()));
+            JObject jsonParams = new JObject(new JProperty("results", _results));
+            return _SendCommand(uri, jsonParams);
+        }
+
         /// <summary>creates a new test result for a test run and case combination</summary>
         /// <param name="runID">the id of the test run</param>
         /// <param name="CaseID">the id of the test case</param>
@@ -156,6 +168,18 @@ namespace TestRail
             var uri = _CreateUri_(_CommandType_.add, "result_for_case", runID, caseID);
             var r = new Result { StatusID = (ulong?)status, Comment = comment, Version = version, Elapsed = elapsed, Defects = defects, AssignedToID = assignedToID };
             var jsonParams = JsonUtility.Merge(r.GetJson(), customs);
+            return _SendCommand(uri, jsonParams);
+        }
+
+        /// <summary>creates a new test result for a test run and list of case results</summary>
+        /// <param name="runID">the id of the test run</param>
+        /// <param name="results">case results list</param>
+        /// <returns></returns>
+        public CommandResult<ulong> AddResultsForCases(ulong runID, List<Result> results)
+        {
+            var uri = _CreateUri_(_CommandType_.add, "results_for_cases", runID);
+            JArray _results = new JArray(results.Select(r => r.GetJson()));
+            JObject jsonParams = new JObject(new JProperty("results", _results));            
             return _SendCommand(uri, jsonParams);
         }
 
